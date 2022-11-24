@@ -1,5 +1,5 @@
 const modals = () => {
-    // отслежка нажимали ли на любую кнопку
+    // переменная для отслежки нажимали ли на любую кнопку
     let btnPressed;
     function bindModals(triggerSelector, modalSelector, closeSelector, destroyTrigger = false) {
         const trigger = document.querySelectorAll(triggerSelector),
