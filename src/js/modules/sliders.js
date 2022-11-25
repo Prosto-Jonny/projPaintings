@@ -12,7 +12,7 @@ const sliders =(slides, direction, prev, next)=>{
             if(n > items.length){slideIndex = 1;}
             if(n < 1){slideIndex = items.length;}
 
-            items.forEach(item=>{item.classList.add('animated');item.style.display="none";});
+            items.forEach(item=>{item.classList.add('animate__animated');item.style.display="none";});
             items[slideIndex-1].style.display="block";
         }
         //первич. инициализ.
@@ -31,10 +31,10 @@ const sliders =(slides, direction, prev, next)=>{
             prevBtn.addEventListener('click', () => {
                 plusSlides(-1);
                 // анимация при переключ.
-                items[slideIndex-1].classList.remove('slideInLeft');
-                items[slideIndex-1].classList.add('slideInRight');
+                items[slideIndex-1].classList.remove('animate__fadeInLeftBig');
+                items[slideIndex-1].classList.add('animate__fadeInRightBig');
             });
-            nextBtn.addEventListener('click', () => {plusSlides(1);items[slideIndex-1].classList.remove('slideInRight');items[slideIndex-1].classList.add('slideInLeft');});
+            nextBtn.addEventListener('click', () => {plusSlides(1);items[slideIndex-1].classList.remove('animate__fadeInRightBig');items[slideIndex-1].classList.add('animate__fadeInLeftBig');});
         } catch(e){}
 
         // механизм для останова автомат. переключ. слайдов при наведении на область слайдера
@@ -43,13 +43,13 @@ const sliders =(slides, direction, prev, next)=>{
             if(direction === 'vertical') {
                 paused = setInterval(function(){
                     plusSlides(1);
-                    items[slideIndex-1].classList.add('slideInDown');
+                    items[slideIndex-1].classList.add('animate__fadeInDown');
                 }, 4000);
             } else{
                 paused = setInterval(function(){
                     plusSlides(1);
-                    items[slideIndex-1].classList.remove('slideInLeft');
-                    items[slideIndex-1].classList.add('slideInRight');
+                    items[slideIndex-1].classList.remove('animate__fadeInLeftBig');
+                    items[slideIndex-1].classList.add('animate__fadeInRightBig');
                 }, 4000);
             }
         }
