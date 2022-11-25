@@ -12,9 +12,9 @@ const sliders =(slides, direction, prev, next)=>{
             if(n > items.length){slideIndex = 1;}
             if(n < 1){slideIndex = items.length;}
 
-            items.forEach(item=>{item.style.display="none";item.classList.add('animated');});
+            items.forEach(item=>{item.classList.add('animated');item.style.display="none";});
             items[slideIndex-1].style.display="block";
-        };
+        }
         //первич. инициализ.
         showSlides(slideIndex);
 
@@ -52,7 +52,7 @@ const sliders =(slides, direction, prev, next)=>{
                     items[slideIndex-1].classList.add('slideInRight');
                 }, 4000);
             }
-        };
+        }
         activateAnimation();
         items[0].parentNode.addEventListener('mouseenter', ()=>{clearInterval(paused);});
         items[0].parentNode.addEventListener('mouseleave', ()=>{activateAnimation();});
