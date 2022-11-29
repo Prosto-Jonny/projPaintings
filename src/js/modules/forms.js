@@ -1,6 +1,6 @@
 import { postData } from "../services/requests";
 
-const forms = () => {
+const forms = (state) => {
     const form = document.querySelectorAll('form'),
         inputs = document.querySelectorAll('input'),
         upload = document.querySelectorAll('[name="upload"]'),
@@ -24,8 +24,8 @@ const forms = () => {
 
     // перемен. с адресом отправки данных(консультация и файлы на разные)
     const path = {
-        designer: 'assets/server.php',
-        question: 'assets/question.php'
+        designer: 'http://localhost:3000/request',
+        question: 'http://localhost:3000/questions'
     };
 
     upload.forEach(item =>{
@@ -49,7 +49,7 @@ const forms = () => {
             statusMessage.classList.add('status');
             item.parentNode.appendChild(statusMessage);
             // скрытие формы(анимац. делает прозрач, потом убирается)
-            item.classList.add('animated', 'fadeOutUp');
+            item.classList.add('animate__animated', 'animate__fadeOutUp');
             setTimeout(()=>{
                 item.style.display = "none";
             }, 400);
@@ -57,7 +57,7 @@ const forms = () => {
             //отображ. статуса сообщ.(добав. картинку)
             let statusImg = document.createElement('img');
             statusImg.setAttribute('src', message.spinner);
-            statusImg.classList.add('animated', 'fadeInUp');
+            statusImg.classList.add('animate__animated', 'animate__fadeInUp');
             statusMessage.appendChild(statusImg);
             //добав. текст
             let textStatus = document.createElement('div');
@@ -66,6 +66,9 @@ const forms = () => {
 
             // сбор данных из формы(исп. объект formData)
             const formData = new FormData(item);
+            for (let key in state) {
+                formData.append(key, state[key]);
+            }
             //перемен. для динамич. формир. пути отправки
             let api;
             // опред. по родителю куда отправлять(или статич.форма)
@@ -73,6 +76,7 @@ const forms = () => {
             // запрос на сервер(Fetch)
             postData(api, formData)
                 .then(res => {
+                    console.log(res);
                     // измен. изображ. и текста
                     statusImg.setAttribute('src', message.ok);
                     textStatus.textContent = message.succes;
@@ -86,8 +90,8 @@ const forms = () => {
                     setTimeout(() => {
                         statusMessage.remove();
                         item.style.display = 'block';
-                        item.classList.remove('fadeOutUp');
-                        item.classList.add('fadeInUp');
+                        item.classList.remove('animate__fadeOutUp');
+                        item.classList.add('animate__fadeInUp');
                     }, 5000);
                 });
         });
