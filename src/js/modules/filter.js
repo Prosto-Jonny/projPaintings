@@ -16,16 +16,13 @@ const filter = () => {
         markGuy = wrapper.querySelectorAll('.guy'),
         no = document.querySelector('.portfolio-no');
 
-        // функция фильтрации эл.(принимает тип портретов, которые надо показать)
         const typeFilter = (markType)=> {
-            // сначала скрытие всех эл.
             markAll.forEach(mark => {
                 mark.style.display = 'none';
                 mark.classList.remove('animate__animated', 'animate__fadeIn');
             });
             no.style.display = 'none';
             no.classList.remove('animate__animated', 'animate__fadeIn');
-            //фильрация и показ. нужного блока(если он есть)
             if(markType) {
                 markType.forEach(mark=>{
                     mark.style.display = 'block';
@@ -58,11 +55,8 @@ const filter = () => {
         btnGranddad.addEventListener('click', ()=>{
             typeFilter();
         });
-
-        //переключ. актив. класса(делегиров.)
         menu.addEventListener('click', (e)=>{
             let target = e.target;
-            // "LI" обязат. так, а то не работает
             if(target && target.tagName == "LI") {
                 items.forEach(btn=>btn.classList.remove('active'));
                 target.classList.add('active');

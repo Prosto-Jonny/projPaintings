@@ -1,11 +1,9 @@
 const modals = () => {
-    // переменная для отслежки нажимали ли на любую кнопку
     let btnPressed;
     function bindModals(triggerSelector, modalSelector, closeSelector, destroyTrigger = false) {
         const trigger = document.querySelectorAll(triggerSelector),
             modal = document.querySelector(modalSelector),
             close = document.querySelector(closeSelector),
-            // переменная для всех модалок, чтобы их закрывать
             windows = document.querySelectorAll('[data-modal]'),
             scroll = calcScroll();
 
@@ -13,11 +11,9 @@ const modals = () => {
         trigger.forEach(item => {
             item.addEventListener('click', (e) => {
                 if (e.target) { e.preventDefault(); }
-                // удалить триггер при открытии модалки
                 if(destroyTrigger) {
                     item.remove();
                 }
-                // закрытие старых модалок при открытии нового
                 windows.forEach(item=> {item.style.display = "none";item.classList.add('animated', 'fadeIn');})
                 modal.style.display = "block";
                 document.body.style.overflow = "hidden";
@@ -40,10 +36,8 @@ const modals = () => {
             }
         });
     }
-    // автомат. открытие по времени
     function showModalByTime(selector, time) {
         setTimeout(()=>{
-            // если есть открытая модалка в момент открытия автомата, то автомата не будет
             let display;
             document.querySelectorAll('[data-modal]').forEach(item=>{
                 if(getComputedStyle(item).display !== 'none'){
@@ -59,8 +53,6 @@ const modals = () => {
 
         }, time);
     }
-
-    // чтоб не прыгал скролл при открытии модалки(подсчёт px скролла)
     function calcScroll() {
         let div = document.createElement('div');
         div.style.width = '50px';
@@ -73,9 +65,6 @@ const modals = () => {
         div.remove();
         return scrollWidth;
     }
-
-
-    // Модалка(подарок) всплывает при скроле до конца страницы и на подарок;
     function showModalByScroll(selector) {
         window.addEventListener('scroll', ()=>{
             if (!btnPressed && (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight)) {

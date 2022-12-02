@@ -4410,6 +4410,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
 /* harmony import */ var _modules_pictures__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictures */ "./src/js/modules/pictures.js");
+/* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
+/* harmony import */ var _modules_burger__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/burger */ "./src/js/modules/burger.js");
+
+
 
 
 
@@ -4431,7 +4435,74 @@ window.addEventListener('DOMContentLoaded', function () {
   Object(_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price');
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
   Object(_modules_pictures__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
+  Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
+  Object(_modules_burger__WEBPACK_IMPORTED_MODULE_10__["default"])('.burger', '.burger-menu');
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/accordion.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/accordion.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! core-js/modules/web.dom-collections.for-each */ "./node_modules/core-js/modules/web.dom-collections.for-each.js");
+/* harmony import */ var core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_web_dom_collections_for_each__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var accordion = function accordion(triggersSelector) {
+  var btns = document.querySelectorAll(triggersSelector);
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      this.classList.toggle('active-style');
+      this.nextElementSibling.classList.toggle('active-content');
+
+      if (this.classList.contains('active-style')) {
+        this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + "px";
+      } else {
+        this.nextElementSibling.style.maxHeight = '0px';
+      }
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (accordion);
+
+/***/ }),
+
+/***/ "./src/js/modules/burger.js":
+/*!**********************************!*\
+  !*** ./src/js/modules/burger.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var burger = function burger(burgerSelector, burgerMenu) {
+  var btn = document.querySelector(burgerSelector),
+      listItems = document.querySelector(burgerMenu);
+  listItems.style.display = 'none';
+  btn.addEventListener('click', function () {
+    if (listItems.style.display == 'none' && window.screen.availWidth < 993) {
+      listItems.style.display = 'block';
+    } else {
+      listItems.style.display = 'none';
+    }
+  }); // если экран перевернули, то открытое меню должно скрыться
+
+  window.addEventListener('resize', function () {
+    if (window.screen.availWidth > 992) {
+      listItems.style.display = 'none';
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (burger);
 
 /***/ }),
 
@@ -4450,10 +4521,9 @@ var calc = function calc(size, material, option, promocode, result) {
   var optionBlock = document.querySelector(option);
   var promocodeBlock = document.querySelector(promocode);
   var resultBlock = document.querySelector(result);
-  var sum = 0; // общ. функц., срабат. при выборе
+  var sum = 0;
 
   var calcFunc = function calcFunc() {
-    // мат. действия на основе value  в вёрстке(приходит строка)
     sum = Math.round(+sizeBlock.value * +materialBlock.value + +optionBlock.value);
 
     if (sizeBlock.value == '' || materialBlock.value == '') {
@@ -4535,16 +4605,15 @@ var filter = function filter() {
       markLovers = wrapper.querySelectorAll('.lovers'),
       markChef = wrapper.querySelectorAll('.chef'),
       markGuy = wrapper.querySelectorAll('.guy'),
-      no = document.querySelector('.portfolio-no'); // функция фильтрации эл.(принимает тип портретов, которые надо показать)
+      no = document.querySelector('.portfolio-no');
 
   var typeFilter = function typeFilter(markType) {
-    // сначала скрытие всех эл.
     markAll.forEach(function (mark) {
       mark.style.display = 'none';
       mark.classList.remove('animate__animated', 'animate__fadeIn');
     });
     no.style.display = 'none';
-    no.classList.remove('animate__animated', 'animate__fadeIn'); //фильрация и показ. нужного блока(если он есть)
+    no.classList.remove('animate__animated', 'animate__fadeIn');
 
     if (markType) {
       markType.forEach(function (mark) {
@@ -4577,10 +4646,9 @@ var filter = function filter() {
   });
   btnGranddad.addEventListener('click', function () {
     typeFilter();
-  }); //переключ. актив. класса(делегиров.)
-
+  });
   menu.addEventListener('click', function (e) {
-    var target = e.target; // "LI" обязат. так, а то не работает
+    var target = e.target;
 
     if (target && target.tagName == "LI") {
       items.forEach(function (btn) {
@@ -4640,13 +4708,11 @@ var forms = function forms(state) {
       clearAllInputs = function clearAllInputs() {
     inputs.forEach(function (item) {
       item.value = '';
-    }); // очистка названий загруженных файлов
-
+    });
     upload.forEach(function (item) {
       item.previousElementSibling.textContent = "Файл не найден";
     });
-  }; // перемен. с адресом отправки данных(консультация и файлы на разные)
-
+  };
 
   var path = {
     designer: 'http://localhost:3000/request',
@@ -4654,51 +4720,40 @@ var forms = function forms(state) {
   };
   upload.forEach(function (item) {
     item.addEventListener('input', function () {
-      //динамич. отображ. загруж. файла и обрезка
       var dots;
       var fileName = item.files[0].name.split('.');
       fileName[0].length > 6 ? dots = "..." : dots = '.';
       var name = fileName[0].substring(0, 6) + dots + fileName[1];
       item.previousElementSibling.textContent = name;
     });
-  }); // checkNumInput('input[name="user_phone"]');
-
+  });
   form.forEach(function (item) {
     item.addEventListener('submit', function (e) {
-      e.preventDefault(); // добавка статуса отправки данных
-
+      e.preventDefault();
       var statusMessage = document.createElement('div');
       statusMessage.classList.add('status');
-      item.parentNode.appendChild(statusMessage); // скрытие формы(анимац. делает прозрач, потом убирается)
-
+      item.parentNode.appendChild(statusMessage);
       item.classList.add('animate__animated', 'animate__fadeOutUp');
       setTimeout(function () {
         item.style.display = "none";
-      }, 400); //отображ. статуса сообщ.(добав. картинку)
-
+      }, 400);
       var statusImg = document.createElement('img');
       statusImg.setAttribute('src', message.spinner);
       statusImg.classList.add('animate__animated', 'animate__fadeInUp');
-      statusMessage.appendChild(statusImg); //добав. текст
-
+      statusMessage.appendChild(statusImg);
       var textStatus = document.createElement('div');
       textStatus.textContent = message.loading;
-      statusMessage.appendChild(textStatus); // сбор данных из формы(исп. объект formData)
-
+      statusMessage.appendChild(textStatus);
       var formData = new FormData(item);
 
       for (var key in state) {
         formData.append(key, state[key]);
-      } //перемен. для динамич. формир. пути отправки
+      }
 
-
-      var api; // опред. по родителю куда отправлять(или статич.форма)
-
-      item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question; // запрос на сервер(Fetch)
-
+      var api;
+      item.closest('.popup-design') || item.classList.contains('calc_form') ? api = path.designer : api = path.question;
       Object(_services_requests__WEBPACK_IMPORTED_MODULE_6__["postData"])(api, formData).then(function (res) {
-        console.log(res); // измен. изображ. и текста
-
+        console.log(res);
         statusImg.setAttribute('src', message.ok);
         textStatus.textContent = message.succes;
       }).catch(function () {
@@ -4755,9 +4810,8 @@ var mask = function mask(selector) {
   function mask(event) {
     var matrix = '+7 (___) ___ __ __',
         i = 0,
-        // не цифры удалить(dev - статич. на основе матрицы, val - динамич., что ввели)
-    def = matrix.replace(/\D/g, ''),
-        val = this.value.replace(/\D/g, ''); // чтоб не удалялась +7
+        def = matrix.replace(/\D/g, ''),
+        val = this.value.replace(/\D/g, '');
 
     if (def.length >= val.length) {
       val = def;
@@ -4765,7 +4819,7 @@ var mask = function mask(selector) {
 
     this.value = matrix.replace(/./g, function (a) {
       return /[_\d]/.test(a) && i < val.length ? val.charAt(i++) : i >= val.length ? '' : a;
-    }); // blur(вышел из фокуса input очистил.)
+    });
 
     if (event.type === 'blur') {
       if (this.value.length == 2) {
@@ -4774,8 +4828,7 @@ var mask = function mask(selector) {
     } else {
       setCursorPosition(this.value.length, this);
     }
-  } // навеш. на inputы
-
+  }
 
   var inputs = document.querySelectorAll(selector);
   inputs.forEach(function (input) {
@@ -4803,7 +4856,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var modals = function modals() {
-  // переменная для отслежки нажимали ли на любую кнопку
   var btnPressed;
 
   function bindModals(triggerSelector, modalSelector, closeSelector) {
@@ -4811,20 +4863,17 @@ var modals = function modals() {
     var trigger = document.querySelectorAll(triggerSelector),
         modal = document.querySelector(modalSelector),
         close = document.querySelector(closeSelector),
-        // переменная для всех модалок, чтобы их закрывать
-    windows = document.querySelectorAll('[data-modal]'),
+        windows = document.querySelectorAll('[data-modal]'),
         scroll = calcScroll();
     trigger.forEach(function (item) {
       item.addEventListener('click', function (e) {
         if (e.target) {
           e.preventDefault();
-        } // удалить триггер при открытии модалки
-
+        }
 
         if (destroyTrigger) {
           item.remove();
-        } // закрытие старых модалок при открытии нового
-
+        }
 
         windows.forEach(function (item) {
           item.style.display = "none";
@@ -4854,12 +4903,10 @@ var modals = function modals() {
         document.body.style.marginRight = "0px";
       }
     });
-  } // автомат. открытие по времени
-
+  }
 
   function showModalByTime(selector, time) {
     setTimeout(function () {
-      // если есть открытая модалка в момент открытия автомата, то автомата не будет
       var display;
       document.querySelectorAll('[data-modal]').forEach(function (item) {
         if (getComputedStyle(item).display !== 'none') {
@@ -4874,8 +4921,7 @@ var modals = function modals() {
         document.body.style.marginRight = "".concat(scroll, "px");
       }
     }, time);
-  } // чтоб не прыгал скролл при открытии модалки(подсчёт px скролла)
-
+  }
 
   function calcScroll() {
     var div = document.createElement('div');
@@ -4887,8 +4933,7 @@ var modals = function modals() {
     var scrollWidth = div.offsetWidth - div.clientWidth;
     div.remove();
     return scrollWidth;
-  } // Модалка(подарок) всплывает при скроле до конца страницы и на подарок;
-
+  }
 
   function showModalByScroll(selector) {
     window.addEventListener('scroll', function () {
@@ -4926,13 +4971,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var pictures = function pictures(imgSelector) {
-  var blocks = document.querySelectorAll(imgSelector); // замена src у картинок
+  var blocks = document.querySelectorAll(imgSelector);
 
   function showImg(block) {
-    var img = block.querySelector('img'); // у картинок одинаковый тип, поэтому отрез. конец строкии добав. постсуф. -1
-
-    img.src = img.src.slice(0, -4) + '-1.png'; // скрытие лишних элементов(р), кроме одного(хит продаж(.sizes-hit))
-
+    var img = block.querySelector('img');
+    img.src = img.src.slice(0, -4) + '-1.png';
     block.querySelectorAll('p:not(.sizes-hit)').forEach(function (p) {
       p.style.display = 'none';
     });
@@ -4982,28 +5025,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var showMoreStyles = function showMoreStyles(trigger, wrapper) {
-  var btn = document.querySelector(trigger); // добавление карточек без запроса на сервер(карточки есть в вёрстке) вторым аргументом надо поставить styles
-  // const cards = document.querySelectorAll(styles);
-  // анимация для всех карточек
-  // cards.forEach(item => {
-  //     item.classList.add('animated', 'fadeInUp');
-  // });
-  // btn.addEventListener('click', ()=>{
-  //     cards.forEach(item => {
-  //         item.classList.remove('hidden-lg', 'hidden-md', 'hidden-sm', 'hidden-xs');
-  //         item.classList.add('col-sm-3', 'col-sm-offset-0', 'col-xs-10', 'col-xs-offset-1');
-  //     });
-  //     btn.style.display = 'none';
-  // });
-  // второй аргумент НЕ стрелочная функция, чтобы обработчик ссылался на объект вызова и сработал this.remove();
-
+  var btn = document.querySelector(trigger);
   btn.addEventListener('click', function () {
     Object(_services_requests__WEBPACK_IMPORTED_MODULE_3__["getResource"])('http://localhost:3000/styles').then(function (res) {
       return createCards(res);
     }).catch(function (error) {
       return console.log(error);
-    }); // убрать кнопку
-
+    });
     this.remove();
   });
 
@@ -5040,14 +5068,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var sliders = function sliders(slides, direction, prev, next) {
-  // первонач. слайд
-  var slideIndex = 1; // переменка для останова автомат. переключ. слайдов
-
+  var slideIndex = 1;
   var paused = false;
-  var items = document.querySelectorAll(slides); // функ., ответ. за отображ. слайдов
+  var items = document.querySelectorAll(slides);
 
   function showSlides(n) {
-    // крайние значения
     if (n > items.length) {
       slideIndex = 1;
     }
@@ -5061,22 +5086,19 @@ var sliders = function sliders(slides, direction, prev, next) {
       item.style.display = "none";
     });
     items[slideIndex - 1].style.display = "block";
-  } //первич. инициализ.
+  }
 
-
-  showSlides(slideIndex); //обёртка для перемещ. слайдов
+  showSlides(slideIndex);
 
   function plusSlides(n) {
     showSlides(slideIndex += n);
   }
 
   try {
-    // кнопки переключ(не везде нужны)
     var prevBtn = document.querySelector(prev),
         nextBtn = document.querySelector(next);
     prevBtn.addEventListener('click', function () {
-      plusSlides(-1); // анимация при переключ.
-
+      plusSlides(-1);
       items[slideIndex - 1].classList.remove('animate__fadeInLeftBig');
       items[slideIndex - 1].classList.add('animate__fadeInRightBig');
     });
@@ -5085,11 +5107,9 @@ var sliders = function sliders(slides, direction, prev, next) {
       items[slideIndex - 1].classList.remove('animate__fadeInRightBig');
       items[slideIndex - 1].classList.add('animate__fadeInLeftBig');
     });
-  } catch (e) {} // механизм для останова автомат. переключ. слайдов при наведении на область слайдера
-
+  } catch (e) {}
 
   function activateAnimation() {
-    // указ. направление переключ. в слайдерах и вкл. автопереключ.
     if (direction === 'vertical') {
       paused = setInterval(function () {
         plusSlides(1);

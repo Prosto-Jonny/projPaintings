@@ -2,28 +2,10 @@ import { getResource } from "../services/requests";
 
 const showMoreStyles = (trigger, wrapper)=> {
         const btn = document.querySelector(trigger);
-
-        // добавление карточек без запроса на сервер(карточки есть в вёрстке) вторым аргументом надо поставить styles
-        // const cards = document.querySelectorAll(styles);
-        // анимация для всех карточек
-        // cards.forEach(item => {
-        //     item.classList.add('animated', 'fadeInUp');
-        // });
-
-        // btn.addEventListener('click', ()=>{
-        //     cards.forEach(item => {
-        //         item.classList.remove('hidden-lg', 'hidden-md', 'hidden-sm', 'hidden-xs');
-        //         item.classList.add('col-sm-3', 'col-sm-offset-0', 'col-xs-10', 'col-xs-offset-1');
-        //     });
-        //     btn.style.display = 'none';
-        // });
-
-        // второй аргумент НЕ стрелочная функция, чтобы обработчик ссылался на объект вызова и сработал this.remove();
     btn.addEventListener('click', function() {
         getResource('http://localhost:3000/styles')
             .then(res=>createCards(res))
             .catch(error=>console.log(error));
-            // убрать кнопку
             this.remove();
     });
 
